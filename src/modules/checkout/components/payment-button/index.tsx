@@ -1,11 +1,11 @@
 "use client"
 
-import { isManual, isStripeLike } from "@lib/constants"
+import { isManual, isRazorpay, isStripeLike } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import ErrorMessage from "../error-message"
 
 type PaymentButtonProps = {
@@ -30,6 +30,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     case isStripeLike(paymentSession?.provider_id):
       return (
         <StripePaymentButton
+          notReady={notReady}
+          cart={cart}
+          data-testid={dataTestId}
+        />
+      )
+    case isRazorpay(paymentSession?.provider_id):
+      return (
+        <RazorpayPaymentButton
           notReady={notReady}
           cart={cart}
           data-testid={dataTestId}
@@ -146,6 +154,118 @@ const StripePaymentButton = ({
       <ErrorMessage
         error={errorMessage}
         data-testid="stripe-payment-error-message"
+      />
+    </>
+  )
+}
+
+const RazorpayPaymentButton = ({
+  cart,
+  notReady,
+  "data-testid": dataTestId,
+}: {
+  cart: HttpTypes.StoreCart
+  notReady: boolean
+  "data-testid"?: string
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const session = cart.payment_collection?.payment_sessions?.find(
+    (s) => s.status === "pending"
+  )
+
+  const onPaymentCompleted = useCallback(async () => {
+    await placeOrder()
+      .catch((err) => {
+        setErrorMessage(err.message)
+      })
+      .finally(() => {
+        setSubmitting(false)
+      })
+  }, [])
+
+  const handlePayment = useCallback(async () => {
+    setSubmitting(true)
+    setErrorMessage(null)
+
+    const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY
+    if (!razorpayKey) {
+      setErrorMessage("Razorpay key is not configured")
+      setSubmitting(false)
+      return
+    }
+
+    const orderId = session?.data?.id as string | undefined
+
+    const options = {
+      key: razorpayKey,
+      amount: cart.total ?? 0,
+      currency: cart.region?.currency_code?.toUpperCase() || "INR",
+      name: "Desi Cart",
+      description: "Order Payment",
+      order_id: orderId,
+      handler: async (response: {
+        razorpay_payment_id: string
+        razorpay_order_id: string
+        razorpay_signature: string
+      }) => {
+        if (response.razorpay_payment_id) {
+          await onPaymentCompleted()
+        }
+      },
+      prefill: {
+        name: `${cart.billing_address?.first_name || ""} ${cart.billing_address?.last_name || ""}`.trim(),
+        email: cart.email || "",
+        contact: cart.billing_address?.phone || "",
+      },
+      theme: {
+        color: "#4F46E5",
+      },
+      modal: {
+        ondismiss: () => {
+          setSubmitting(false)
+        },
+      },
+    }
+
+    try {
+      const RazorpayCheckout = (window as any).Razorpay
+      if (!RazorpayCheckout) {
+        setErrorMessage(
+          "Razorpay SDK not loaded. Please refresh and try again."
+        )
+        setSubmitting(false)
+        return
+      }
+      const rzp = new RazorpayCheckout(options)
+      rzp.on("payment.failed", (response: any) => {
+        setErrorMessage(
+          response.error?.description || "Payment failed. Please try again."
+        )
+        setSubmitting(false)
+      })
+      rzp.open()
+    } catch {
+      setErrorMessage("Failed to initialize Razorpay. Please try again.")
+      setSubmitting(false)
+    }
+  }, [cart, session, onPaymentCompleted])
+
+  return (
+    <>
+      <Button
+        disabled={notReady}
+        onClick={handlePayment}
+        size="large"
+        isLoading={submitting}
+        data-testid={dataTestId}
+      >
+        Pay with Razorpay
+      </Button>
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="razorpay-payment-error-message"
       />
     </>
   )

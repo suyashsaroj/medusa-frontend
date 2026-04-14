@@ -44,7 +44,6 @@ yarn-error.log*
 node_modules
 
 .yarn/*
-!.yarn/releases
 .swc
 dump.rdb
 /test-results/

@@ -4,12 +4,17 @@ import { CreditCard } from "@medusajs/icons"
 import Ideal from "@modules/common/icons/ideal"
 import Bancontact from "@modules/common/icons/bancontact"
 import PayPal from "@modules/common/icons/paypal"
+import Razorpay from "@modules/common/icons/razorpay"
 
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
   string,
   { title: string; icon: React.JSX.Element }
 > = {
+  pp_razorpay_razorpay: {
+    title: "Razorpay (UPI, Cards, Wallets)",
+    icon: <Razorpay />,
+  },
   pp_stripe_stripe: {
     title: "Credit card",
     icon: <CreditCard />,
@@ -42,6 +47,10 @@ export const isStripeLike = (providerId?: string) => {
   return (
     providerId?.startsWith("pp_stripe_") || providerId?.startsWith("pp_medusa-")
   )
+}
+
+export const isRazorpay = (providerId?: string) => {
+  return providerId?.startsWith("pp_razorpay")
 }
 
 export const isPaypal = (providerId?: string) => {
