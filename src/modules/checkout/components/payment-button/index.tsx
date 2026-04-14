@@ -200,7 +200,7 @@ const RazorpayPaymentButton = ({
 
     const options = {
       key: razorpayKey,
-      amount: cart.total ? cart.total * 100 : 0,
+      amount: cart.total ?? 0,
       currency: cart.region?.currency_code?.toUpperCase() || "INR",
       name: "Desi Cart",
       description: "Order Payment",

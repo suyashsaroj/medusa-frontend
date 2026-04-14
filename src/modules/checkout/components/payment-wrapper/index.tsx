@@ -47,7 +47,7 @@ const PaymentWrapper: React.FC<PaymentWrapperProps> = ({ cart, children }) => {
 
   if (isRazorpay(paymentSession?.provider_id) && paymentSession) {
     return (
-      <RazorpayWrapper paymentSession={paymentSession}>
+      <RazorpayWrapper>
         {children}
       </RazorpayWrapper>
     )

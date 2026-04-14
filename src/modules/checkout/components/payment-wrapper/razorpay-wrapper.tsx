@@ -1,10 +1,8 @@
 "use client"
 
-import { HttpTypes } from "@medusajs/types"
 import { createContext } from "react"
 
 type RazorpayWrapperProps = {
-  paymentSession: HttpTypes.StorePaymentSession
   children: React.ReactNode
 }
 
