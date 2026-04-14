@@ -1,125 +1,143 @@
-<p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
-  </a>
-</p>
+# Desi Cart — Indian Ecommerce Storefront
 
-<h1 align="center">
-  Medusa Next.js Starter Template
-</h1>
+A production-ready Next.js storefront built on [Medusa's official starter](https://github.com/medusajs/nextjs-starter-medusa), customized for Indian ecommerce with Razorpay payments and Shiprocket shipping integration.
 
-<p align="center">
-Combine Medusa's modules for your commerce backend with the newest Next.js 15 features for a performant storefront.</p>
+## Features
 
-<p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-</p>
+- **Full Ecommerce Flow**: Product listing, product details, cart, checkout, user accounts, order history
+- **Razorpay Payments**: UPI, Cards, Wallets — India's most popular payment gateway
+- **Shiprocket Shipping**: Real-time tracking, shipping rates, pan-India delivery
+- **Order Tracking**: Dedicated tracking page with AWB/shipment lookup
+- **Modern Stack**: Next.js 15, React 19, Tailwind CSS, TypeScript
+- **SSR/ISR**: Server-side rendering and incremental static regeneration
+- **SEO Optimized**: Meta tags, Open Graph images, sitemap generation
 
-### Prerequisites
+## Prerequisites
 
-To use the [Next.js Starter Template](https://medusajs.com/nextjs-commerce/), you should have a Medusa server running locally on port 9000.
-For a quick setup, run:
+- Node.js 18+ (recommended: 20+)
+- A running [Medusa v2 backend](https://github.com/suyashsaroj/medusa-backend) on port 9000
+- Razorpay account for payments (optional for development)
 
-```shell
-npx create-medusa-app@latest
+## Quick Start
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/suyashsaroj/medusa-frontend.git
+cd medusa-frontend
+npm install
 ```
 
-Check out [create-medusa-app docs](https://docs.medusajs.com/learn/installation) for more details and troubleshooting.
+### 2. Configure environment
 
-# Overview
-
-The Medusa Next.js Starter is built with:
-
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Medusa](https://medusajs.com/)
-
-Features include:
-
-- Full ecommerce support:
-  - Product Detail Page
-  - Product Overview Page
-  - Product Collections
-  - Cart
-  - Checkout with Stripe
-  - User Accounts
-  - Order Details
-- Full Next.js 15 support:
-  - App Router
-  - Next fetching/caching
-  - Server Components
-  - Server Actions
-  - Streaming
-  - Static Pre-Rendering
-
-# Quickstart
-
-### Setting up the environment variables
-
-Navigate into your projects directory and get your environment variables ready:
-
-```shell
-cd nextjs-starter-medusa/
-mv .env.template .env.local
+```bash
+cp .env.template .env.local
 ```
 
-### Install dependencies
+Edit `.env.local` with your values:
 
-Use Yarn to install all dependencies.
-
-```shell
-yarn
+```env
+MEDUSA_BACKEND_URL=http://localhost:9000
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=<your-publishable-api-key>
+NEXT_PUBLIC_DEFAULT_REGION=in
+NEXT_PUBLIC_RAZORPAY_KEY=<your-razorpay-key-id>
 ```
 
-### Start developing
+> Get your publishable API key from the Medusa admin panel at `http://localhost:9000/app` → Settings → API Keys.
 
-You are now ready to start up your project.
+### 3. Start development server
 
-```shell
-yarn dev
+```bash
+npm run dev
 ```
 
-### Open the code and start customizing
+Open [http://localhost:8000](http://localhost:8000) in your browser.
 
-Your site is now running at http://localhost:8000!
+### 4. Build for production
 
-# Payment integrations
-
-By default this starter supports the following payment integrations
-
-- [Stripe](https://stripe.com/)
-
-To enable the integrations you need to add the following to your `.env.local` file:
-
-```shell
-NEXT_PUBLIC_STRIPE_KEY=<your-stripe-public-key>
+```bash
+npm run build
+npm start
 ```
 
-You'll also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information on how to configure [Stripe](https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe#main).
+## Project Structure
 
-# Resources
+```
+src/
+├── app/                          # Next.js App Router pages
+│   └── [countryCode]/
+│       ├── (checkout)/           # Checkout flow (with Razorpay SDK)
+│       └── (main)/
+│           ├── tracking/         # Order tracking page
+│           ├── cart/             # Shopping cart
+│           ├── account/          # User account (login, orders, addresses)
+│           ├── products/         # Product detail pages
+│           ├── store/            # Product listing page
+│           └── order/            # Order confirmation
+├── lib/
+│   ├── constants.tsx             # Payment provider config (Razorpay, Stripe)
+│   └── data/                     # Server actions for API calls
+└── modules/
+    ├── checkout/components/
+    │   ├── payment-button/       # Payment buttons (Razorpay, Stripe, Manual)
+    │   └── payment-wrapper/      # Payment provider wrappers
+    ├── home/                     # Homepage (hero, featured products)
+    └── layout/                   # Nav, footer, side menu
+```
 
-## Learn more about Medusa
+## Payment Integration
 
-- [Website](https://www.medusajs.com/)
-- [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusajs.com/)
+### Razorpay (Recommended for India)
 
-## Learn more about Next.js
+1. Create an account at [razorpay.com](https://razorpay.com)
+2. Get your Key ID from Dashboard → Settings → API Keys
+3. Set `NEXT_PUBLIC_RAZORPAY_KEY` in `.env.local`
+4. Ensure the Medusa backend has the Razorpay payment provider configured
 
-- [Website](https://nextjs.org/)
-- [GitHub](https://github.com/vercel/next.js)
-- [Documentation](https://nextjs.org/docs)
+The checkout flow:
+- Customer selects "Razorpay (UPI, Cards, Wallets)" as payment method
+- Razorpay checkout modal opens with prefilled customer details
+- After successful payment, order is placed automatically
+- Webhook on backend verifies payment signature
+
+### Stripe (Optional)
+
+Set `NEXT_PUBLIC_STRIPE_KEY` in `.env.local` if using Stripe alongside Razorpay.
+
+## Shipping & Tracking
+
+- Shipping methods are fetched from the Medusa backend during checkout
+- The `/tracking` page allows customers to track orders using AWB numbers
+- Tracking data is fetched from the backend's Shiprocket integration
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `MEDUSA_BACKEND_URL` | Yes | Medusa backend URL (default: `http://localhost:9000`) |
+| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | Yes | Publishable API key from Medusa admin |
+| `NEXT_PUBLIC_DEFAULT_REGION` | No | Default region code (default: `in`) |
+| `NEXT_PUBLIC_RAZORPAY_KEY` | No | Razorpay Key ID for payments |
+| `NEXT_PUBLIC_STRIPE_KEY` | No | Stripe publishable key (optional) |
+| `REVALIDATE_SECRET` | No | Next.js on-demand revalidation secret |
+
+## Deployment (Vercel)
+
+1. Push your repo to GitHub
+2. Import the project in [Vercel](https://vercel.com)
+3. Set environment variables in Vercel dashboard
+4. Update `NEXT_PUBLIC_BASE_URL` to your Vercel domain
+5. Update Medusa backend CORS to allow your Vercel domain
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router, Turbopack)
+- **UI**: Tailwind CSS + Medusa UI components
+- **Language**: TypeScript
+- **Backend**: Medusa v2 (headless commerce)
+- **Payments**: Razorpay + Stripe
+- **Shipping**: Shiprocket (via Medusa backend)
+
+## License
+
+MIT
