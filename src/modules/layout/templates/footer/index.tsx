@@ -12,138 +12,101 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
+    <footer className="bg-primary/5 rounded-t-[3rem] mt-20 border-t border-primary/10 w-full pt-16">
       <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
+        <div className="flex flex-col gap-y-12 xsmall:flex-row items-start justify-between py-20 border-b border-primary/10">
           <div>
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+              className="text-2xl font-black text-primary font-headline tracking-tighter"
             >
-              Desi Cart
+              PlushYo Studio
             </LocalizedClientLink>
+            <p className="mt-4 text-ui-fg-subtle italic max-w-xs">
+              Hand-stitched memories, premium fabrics, and a dash of magic in every fluff.
+            </p>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return
-                    }
-
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
-                >
-                  {collections?.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
             <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Quick Links</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+              <span className="font-bold text-primary uppercase tracking-widest text-xs">
+                The Boxes
+              </span>
+              <ul className="grid grid-cols-1 gap-2 text-ui-fg-subtle">
                 <li>
-                  <LocalizedClientLink
-                    className="hover:text-ui-fg-base"
-                    href="/store"
-                  >
-                    All Products
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/products/starter-snuggle">
+                    Snuggle Starter
                   </LocalizedClientLink>
                 </li>
                 <li>
-                  <LocalizedClientLink
-                    className="hover:text-ui-fg-base"
-                    href="/tracking"
-                  >
-                    Track Order
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/products/deluxe-dreamer">
+                    Deluxe Dreamer
                   </LocalizedClientLink>
                 </li>
                 <li>
-                  <LocalizedClientLink
-                    className="hover:text-ui-fg-base"
-                    href="/account"
-                  >
-                    My Account
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/products/ultimate-crate">
+                    Ultimate Studio Crate
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <span className="font-bold text-primary uppercase tracking-widest text-xs">
+                Collection
+              </span>
+              <ul className="grid grid-cols-1 gap-2 text-ui-fg-subtle">
+                <li>
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/collections/featured">
+                    Studio Picks
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/collections/mystery">
+                    The Mystery Series
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/collections/limited">
+                    Limited Fluffs
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <span className="font-bold text-primary uppercase tracking-widest text-xs">Studio</span>
+              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle">
+                <li>
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/store">
+                    The Studio Shop
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/tracking">
+                    Track Your Magic
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink className="hover:text-primary transition-colors" href="/account">
+                    Studio Account
                   </LocalizedClientLink>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Desi Cart. All rights reserved.
-          </Text>
-          <MedusaCTA />
+        
+        <div className="flex flex-col items-center py-12 gap-6">
+          <div className="text-3xl font-headline italic text-primary/80">
+            Handmade with Love © {new Date().getFullYear()}
+          </div>
+          
+          <div className="w-full h-1 border-t-4 border-dashed border-primary/5"></div>
+
+          <div className="flex w-full justify-between items-center text-ui-fg-muted text-xs mt-8">
+            <Text className="txt-compact-small">
+              PlushYo Studio - Premium Handmade Wonders.
+            </Text>
+            <MedusaCTA />
+          </div>
         </div>
       </div>
     </footer>

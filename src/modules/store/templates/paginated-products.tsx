@@ -64,15 +64,19 @@ export default async function PaginatedProducts({
     countryCode,
   })
 
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+  const { IS_PLUSH_PRODUCT } = await import("@lib/util/plush-mapper")
+  const filteredProducts = products.filter(p => IS_PLUSH_PRODUCT(p.id!))
+  const filteredCount = filteredProducts.length
+
+  const totalPages = Math.ceil(filteredCount / PRODUCT_LIMIT)
 
   return (
     <>
       <ul
-        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
+        className="grid grid-cols-1 w-full small:grid-cols-3 gap-x-12 gap-y-24"
         data-testid="products-list"
       >
-        {products.map((p) => {
+        {filteredProducts.map((p) => {
           return (
             <li key={p.id}>
               <ProductPreview product={p} region={region} />

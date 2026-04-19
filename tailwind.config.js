@@ -21,6 +21,50 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        primary: {
+          DEFAULT: "#256653",
+          container: "#a9ead2",
+          dim: "#165a48",
+          fixed: "#a9ead2",
+          "fixed-dim": "#9bdcc4",
+          "on-container": "#145846",
+        },
+        secondary: {
+          DEFAULT: "#75506b",
+          container: "#ffcff0",
+          dim: "#68445f",
+          fixed: "#ffcff0",
+          "fixed-dim": "#f0c1e1",
+          "on-container": "#66435e",
+        },
+        tertiary: {
+          DEFAULT: "#785342",
+          container: "#ffccb6",
+          dim: "#6b4737",
+          fixed: "#ffccb6",
+          "fixed-dim": "#f0bea9",
+          "on-container": "#664232",
+        },
+        surface: {
+          DEFAULT: "#f6f6f6",
+          bright: "#f6f6f6",
+          variant: "#dbdddd",
+          container: "#e7e8e8",
+          dim: "#d3d5d5",
+          "container-low": "#f0f1f1",
+          "container-lowest": "#ffffff",
+          "container-high": "#e1e3e3",
+          "container-highest": "#dbdddd",
+        },
+        "on-surface": "#2d2f2f",
+        "on-primary": "#c5ffe9",
+        "on-secondary": "#ffeef7",
+        "on-tertiary": "#fff0ea",
+        error: {
+          DEFAULT: "#b31b25",
+          container: "#fb5151",
+          dim: "#9f0519",
+        },
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",
@@ -42,6 +86,10 @@ module.exports = {
         rounded: "8px",
         large: "16px",
         circle: "9999px",
+        DEFAULT: "1rem",
+        lg: "2rem",
+        xl: "3rem",
+        full: "9999px",
       },
       maxWidth: {
         "8xl": "100rem",
@@ -60,6 +108,7 @@ module.exports = {
       },
       fontFamily: {
         sans: [
+          "Plus Jakarta Sans",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
@@ -69,64 +118,49 @@ module.exports = {
           "Ubuntu",
           "sans-serif",
         ],
+        headline: ["Plus Jakarta Sans"],
+        body: ["Plus Jakarta Sans"],
+        label: ["Plus Jakarta Sans"],
       },
       keyframes: {
+        floating: {
+          "0%, 100%": { transform: "translateY(0px) rotate(-1deg)" },
+          "50%": { transform: "translateY(-15px) rotate(1deg)" },
+        },
+        "toy-wobble": {
+          "0%, 100%": { transform: "scale(1) rotate(0deg)" },
+          "25%": { transform: "scale(1.05) rotate(-5deg)" },
+          "50%": { transform: "scale(1) rotate(5deg)" },
+          "75%": { transform: "scale(1.05) rotate(-3deg)" },
+        },
+        "box-shake": {
+          "0%, 100%": { transform: "rotate(0deg) scale(1)" },
+          "25%": { transform: "rotate(-8deg) scale(1.1)" },
+          "50%": { transform: "rotate(8deg) scale(1)" },
+          "75%": { transform: "rotate(-4deg) scale(1.05)" },
+        },
+        "box-jump": {
+          "0%": { transform: "translateY(0) scale(1, 1)" },
+          "20%": { transform: "translateY(10px) scale(1.2, 0.8)" },
+          "50%": { transform: "translateY(-50px) scale(0.8, 1.2)" },
+          "80%": { transform: "translateY(0) scale(1.1, 0.9)" },
+          "100%": { transform: "translateY(0) scale(1, 1)" },
+        },
+        shockwave: {
+          "0%": { transform: "scale(0.5)", opacity: "0.8", "border-width": "10px" },
+          "100%": { transform: "scale(4)", opacity: "0", "border-width": "1px" },
+        },
         ring: {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
         "fade-in-right": {
-          "0%": {
-            opacity: "0",
-            transform: "translateX(10px)",
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateX(0)",
-          },
+          "0%": { opacity: "0", transform: "translateX(10px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
         },
         "fade-in-top": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(-10px)",
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)",
-          },
-        },
-        "fade-out-top": {
-          "0%": {
-            height: "100%",
-          },
-          "99%": {
-            height: "0",
-          },
-          "100%": {
-            visibility: "hidden",
-          },
-        },
-        "accordion-slide-up": {
-          "0%": {
-            height: "var(--radix-accordion-content-height)",
-            opacity: "1",
-          },
-          "100%": {
-            height: "0",
-            opacity: "0",
-          },
-        },
-        "accordion-slide-down": {
-          "0%": {
-            "min-height": "0",
-            "max-height": "0",
-            opacity: "0",
-          },
-          "100%": {
-            "min-height": "var(--radix-accordion-content-height)",
-            "max-height": "none",
-            opacity: "1",
-          },
+          "0%": { opacity: "0", transform: "translateY(-10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
         enter: {
           "0%": { transform: "scale(0.9)", opacity: 0 },
@@ -136,24 +170,17 @@ module.exports = {
           "0%": { transform: "scale(1)", opacity: 1 },
           "100%": { transform: "scale(0.9)", opacity: 0 },
         },
-        "slide-in": {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(0)" },
-        },
       },
       animation: {
+        floating: "floating 4s ease-in-out infinite",
+        "toy-wobble": "toy-wobble 0.6s ease-in-out infinite",
+        "box-shake": "box-shake 0.4s ease-in-out",
+        "box-jump": "box-jump 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+        shockwave: "shockwave 0.6s ease-out forwards",
         ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
-        "fade-in-right":
-          "fade-in-right 0.3s cubic-bezier(0.5, 0, 0.5, 1) forwards",
+        "fade-in-right": "fade-in-right 0.3s cubic-bezier(0.5, 0, 0.5, 1) forwards",
         "fade-in-top": "fade-in-top 0.2s cubic-bezier(0.5, 0, 0.5, 1) forwards",
-        "fade-out-top":
-          "fade-out-top 0.2s cubic-bezier(0.5, 0, 0.5, 1) forwards",
-        "accordion-open":
-          "accordion-slide-down 300ms cubic-bezier(0.87, 0, 0.13, 1) forwards",
-        "accordion-close":
-          "accordion-slide-up 300ms cubic-bezier(0.87, 0, 0.13, 1) forwards",
         enter: "enter 200ms ease-out",
-        "slide-in": "slide-in 1.2s cubic-bezier(.41,.73,.51,1.02)",
         leave: "leave 150ms ease-in forwards",
       },
     },

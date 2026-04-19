@@ -62,23 +62,27 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                 leaveFrom="opacity-100 backdrop-blur-2xl"
                 leaveTo="opacity-0"
               >
-                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
+                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm text-primary m-2 backdrop-blur-2xl">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6"
+                    className="flex flex-col h-full bg-surface-container rounded-[2rem] justify-between p-8 border-4 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] felt-texture overflow-hidden"
                   >
                     <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
+                      <button 
+                        data-testid="close-menu-button" 
+                        onClick={close}
+                        className="w-12 h-12 flex items-center justify-center bg-primary/5 rounded-full hover:bg-primary hover:text-white transition-all duration-200"
+                      >
                         <XMark />
                       </button>
                     </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
+                    <ul className="flex flex-col gap-4 items-start justify-start">
                       {Object.entries(SideMenuItems).map(([name, href]) => {
                         return (
-                          <li key={name}>
+                          <li key={name} className="w-full border-b-2 border-dashed border-primary/5 pb-2">
                             <LocalizedClientLink
                               href={href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
+                              className="text-4xl leading-tight hover:text-secondary hover:translate-x-2 transition-all duration-200 font-headline puffy-text lowercase"
                               onClick={close}
                               data-testid={`${name.toLowerCase()}-link`}
                             >
@@ -88,10 +92,10 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         )
                       })}
                     </ul>
-                    <div className="flex flex-col gap-y-6">
+                    <div className="flex flex-col gap-y-8">
                       {!!locales?.length && (
                         <div
-                          className="flex justify-between"
+                          className="flex justify-between items-center bg-white/50 p-4 rounded-2xl border border-white"
                           onMouseEnter={languageToggleState.open}
                           onMouseLeave={languageToggleState.close}
                         >
@@ -109,7 +113,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         </div>
                       )}
                       <div
-                        className="flex justify-between"
+                        className="flex justify-between items-center bg-white/50 p-4 rounded-2xl border border-white"
                         onMouseEnter={countryToggleState.open}
                         onMouseLeave={countryToggleState.close}
                       >
@@ -126,9 +130,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           )}
                         />
                       </div>
-                      <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Desi Cart. All rights
-                        reserved.
+                      <Text className="flex justify-between txt-compact-small opacity-50 px-2 font-medium">
+                        © {new Date().getFullYear()} PlushYo Studio.
                       </Text>
                     </div>
                   </div>
